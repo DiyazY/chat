@@ -5,7 +5,7 @@ import Group from "../Group";
 
 let hub: any = undefined;
 
-let userName = localStorage.getItem("_name") || "";
+let userName: string;
 
 const NotMembershipGroups: React.FC = () => {
   const [groups, setGroups] = useState<IGroup[]>([]);
@@ -47,6 +47,7 @@ const NotMembershipGroups: React.FC = () => {
     hub
       .invoke("GetGroups", page.current)
       .catch((err: any) => console.error(err));
+    userName = localStorage.getItem("_name") || "";
   }, []);
 
   useEffect(() => {
@@ -83,6 +84,7 @@ const NotMembershipGroups: React.FC = () => {
           group={group}
           LeaveGroup={LeaveGroup}
           joinGroup={joinGroup}
+          userName={userName}
         />
       ))}
       {groups.length === page.current * 20 && (
