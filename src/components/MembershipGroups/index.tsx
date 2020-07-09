@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 
 let hub: any = undefined;
 
-let userName = localStorage.getItem("_name") || "";
+let userName:string;
 
 const MembershipGroups: React.FC = () => {
   const addGroup = () => {
@@ -74,6 +74,7 @@ const MembershipGroups: React.FC = () => {
         )
       )
     );
+    userName = localStorage.getItem("_name") || "";
     return () => {
       hub.off("ReceiveOwnGroups");
     };
@@ -98,6 +99,7 @@ const MembershipGroups: React.FC = () => {
           group={group}
           LeaveGroup={LeaveGroup}
           joinGroup={joinGroup}
+          userName={userName}
         />
       ))}
     </>
