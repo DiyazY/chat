@@ -23,8 +23,8 @@ const addMsgBlock = (
   msgDiv.setAttribute(
     "class",
     userName === author
-      ? styles.message
-      : `${styles.message} ${styles.pullRight}`
+      ? `${styles.message} ${styles.pullRight}`
+      : styles.message
   );
   msgDiv.innerHTML = `<span class=${styles.author}>${author} (${
     time && new Date().toLocaleTimeString()
