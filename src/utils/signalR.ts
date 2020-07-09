@@ -6,7 +6,7 @@ export function initSignalRService(username: string): Promise<boolean> {
   return new Promise((resolve) => {
     try {
       let hub = new signalR.HubConnectionBuilder()
-        .withUrl(`https://localhost:5001/chat?username=${username}`, {
+        .withUrl(`https://chathub20200709104419.azurewebsites.net/chat?username=${username}`, {
           // skipNegotiation: true,
           transport: signalR.HttpTransportType.WebSockets,
         })
