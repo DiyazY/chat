@@ -6,7 +6,7 @@ import { IMessage } from "../../models/IMessage";
 import { useLocation } from "react-router-dom";
 
 let hub: any = undefined;
-let userName = localStorage.getItem("_name") || "";
+let userName: string;
 let groupId: string;
 
 const addMsgBlock = (
@@ -72,6 +72,7 @@ const GroupChat: React.FC = () => {
         addMsgBlock(message.author, message.text, message.time)
     );
     hub.invoke("GetMessagesByGroupId", groupId, page.current);
+    userName = localStorage.getItem("_name") || "";
     return () => {
       hub.off("ReceiveChatMessage");
     };
