@@ -38,7 +38,7 @@ export function initSignalRService(username: string): Promise<boolean> {
         restartHub();
       });
 
-      hub.on("ReceiveChatMessage", (message: IMessage) => console.log(message));
+      ///hub.on("ReceiveChatMessage", (message: IMessage) => console.log(message));
 
       // const onEventSubscribers = new Map(); //contains all subscribers of onEvent
 

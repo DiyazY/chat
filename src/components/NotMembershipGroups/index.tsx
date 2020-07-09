@@ -1,31 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { getSignalRService } from "../../utils/signalR";
 import { IGroup } from "../../models/IGroup";
 import Group from "../Group";
-import { v4 as uuidv4 } from "uuid";
 
 let hub: any = undefined;
 
 let userName = localStorage.getItem("_name") || "";
 
-const MembershipGroups: React.FC = () => {
-  const addGroup = () => {
-    let el = document.getElementById("new-group-name") as HTMLInputElement;
-    let name = el.value || "";
-    let id = uuidv4();
+const NotMembershipGroups: React.FC = () => {
+  const [groups, setGroups] = useState<IGroup[]>([]);
 
-    hub.invoke("CreateGroup", id, name).catch((err: any) => console.error(err));
-
-    setGroups([
-      ...groups,
-      {
-        id,
-        name,
-        members: [userName],
-      },
-    ]);
-    el.value = "";
-  };
+  const page = useRef(1);
 
   const LeaveGroup = (id: string) => {
     setGroups(
@@ -57,51 +42,58 @@ const MembershipGroups: React.FC = () => {
     hub.invoke("JoinGroup", id).catch((err: any) => console.error(err));
   };
 
-  const [groups, setGroups] = useState<IGroup[]>([]);
-
   useEffect(() => {
     hub = getSignalRService();
-    hub.invoke("GetOwnGroups").catch((err: any) => console.error(err));
-    hub.on("ReceiveOwnGroups", (result: any) =>
-      setGroups(
-        result.list.map(
+    hub
+      .invoke("GetGroups", page.current)
+      .catch((err: any) => console.error(err));
+  }, []);
+
+  useEffect(() => {
+    hub.on("ReceiveNotOwnGroups", (result: any) =>
+      setGroups([
+        ...groups,
+        ...result.list.map(
           (p: any) =>
             ({
               id: p.id,
               name: p.name,
               members: p.members.value,
             } as IGroup)
-        )
-      )
+        ),
+      ])
     );
     return () => {
-      hub.off("ReceiveOwnGroups");
-    };
-  }, []);
+        hub.off("ReceiveNotOwnGroups");
+      };
+  }, [groups]);
+
+  const loadGroups = () => {
+    page.current++;
+    hub
+      .invoke("GetGroups", page.current)
+      .catch((err: any) => console.error(err));
+  };
 
   return (
     <>
-      <div>
-        <input
-          type="text"
-          id="new-group-name"
-          className="inpt"
-          placeholder="Type group name"
-        ></input>
-        <button onClick={addGroup} className="btn">
-          Add new group
-        </button>
-      </div>
       {groups.map((group) => (
         <Group
-          key={`_${group.id}_`}
+          key={`_${group.id}`}
           group={group}
           LeaveGroup={LeaveGroup}
           joinGroup={joinGroup}
         />
       ))}
+      {groups.length === page.current * 20 && (
+        <div style={{ margin: "1vh" }}>
+          <button onClick={loadGroups} className="btn">
+            more...
+          </button>
+        </div>
+      )}
     </>
   );
 };
 
-export default MembershipGroups;
+export default NotMembershipGroups;

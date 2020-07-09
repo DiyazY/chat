@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import "./App.css";
 import Groups from "./components/Groups";
+import Chat from "./components/Chat";
 
 function App() {
   const name = useRef("");
@@ -19,16 +20,16 @@ function App() {
   return (
     <div className="App">
       {playerName ? (
-        <Groups userName={playerName} />
+        <Chat userName={playerName}/>
       ) : (
         <header className="App-header">
-          F
           <input
             type="text"
             onChange={onChangeName}
             placeholder="Type name"
+            className="inpt"
           ></input>
-          <button onClick={changePlayerName}>connect</button>
+          <button className="btn" onClick={changePlayerName}>connect</button>
         </header>
       )}
     </div>
