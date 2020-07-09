@@ -7,11 +7,10 @@ export interface GroupProps {
   group: IGroup;
   LeaveGroup: (id: string) => void;
   joinGroup: (id: string) => void;
+  userName: string;
 }
 
-let userName = localStorage.getItem("_name") || "";
-
-const Group: React.FC<GroupProps> = ({ group, LeaveGroup, joinGroup }) => {
+const Group: React.FC<GroupProps> = ({ group, LeaveGroup, joinGroup, userName }) => {
   const history = useHistory();
   const openGroup = (e: any) => {
     if (group.members.includes(userName) && e.target.id !== group.id) {
@@ -30,7 +29,7 @@ const Group: React.FC<GroupProps> = ({ group, LeaveGroup, joinGroup }) => {
         >
           leave
         </button>
-      ) : (
+      ) : group.members.length < 20 ? (
         <button
           className={styles.join}
           id={group.id}
@@ -38,6 +37,8 @@ const Group: React.FC<GroupProps> = ({ group, LeaveGroup, joinGroup }) => {
         >
           join
         </button>
+      ) : (
+        <></>
       )}
       <p className={styles.numberOfMembers}>
         {(group.members && group.members.length) || 0}
