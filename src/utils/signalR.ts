@@ -1,5 +1,3 @@
-import { IMessage } from "../models/IMessage";
-
 const signalR = require("@microsoft/signalr");
 
 let _signalRService: any = undefined;
@@ -37,14 +35,6 @@ export function initSignalRService(username: string): Promise<boolean> {
         console.log("connecition closed");
         restartHub();
       });
-
-      ///hub.on("ReceiveChatMessage", (message: IMessage) => console.log(message));
-
-      // const onEventSubscribers = new Map(); //contains all subscribers of onEvent
-
-      // hub.on("onEvent", (channel: string, channelEvent: any) =>
-      //   onEventSubscribers.forEach((p) => p.call(null, channel, channelEvent))
-      // );
 
       hub
         .start()

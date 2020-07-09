@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import "./App.css";
-import Groups from "./components/Groups";
 import Chat from "./components/Chat";
 
 function App() {

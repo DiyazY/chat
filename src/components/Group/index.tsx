@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { IGroup } from "../../models/IGroup";
 import styles from "./Group.module.css";
 import { useHistory } from "react-router-dom";
-import { getSignalRService } from "../../utils/signalR";
 
 export interface GroupProps {
   group: IGroup;
