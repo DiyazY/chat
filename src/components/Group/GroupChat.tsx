@@ -27,7 +27,7 @@ const addMsgBlock = (
       : styles.message
   );
   msgDiv.innerHTML = `<span class=${styles.author}>${author} (${
-    time && new Date().toLocaleTimeString()
+    time || new Date().toLocaleTimeString()
   }):</span> </br>${text}`;
   block.appendChild(msgDiv);
   block.setAttribute("class", styles.messageRow);
